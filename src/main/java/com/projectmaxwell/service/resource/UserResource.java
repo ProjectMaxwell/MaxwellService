@@ -1,5 +1,6 @@
 package com.projectmaxwell.service.resource;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -25,6 +26,7 @@ public class UserResource {
 	}
 	
 	@GET
+	@RolesAllowed({"read_user_list"})
 	public User[] getUsers(){
 		return userDAO.getUsers();
 	}

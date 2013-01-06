@@ -1,8 +1,5 @@
 package com.projectmaxwell.service.resource;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -14,10 +11,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import org.apache.http.HttpException;
 
 import com.projectmaxwell.exception.InvalidTokenException;
-import com.projectmaxwell.exception.MissingUserFieldException;
 import com.projectmaxwell.model.AcademicTerm;
 import com.projectmaxwell.service.dao.AcademicTermDAO;
 import com.projectmaxwell.service.dao.AcademicTermDAOImpl;
