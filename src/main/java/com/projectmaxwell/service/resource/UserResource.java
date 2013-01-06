@@ -26,7 +26,6 @@ public class UserResource {
 	}
 	
 	@GET
-	@RolesAllowed({"read_user_list"})
 	public User[] getUsers(){
 		return userDAO.getUsers();
 	}
@@ -39,6 +38,7 @@ public class UserResource {
 	
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
+	@RolesAllowed({"create_user"})
 	public User createUser(User user) throws WebApplicationException{
 		return userDAO.createUser(user);
 	}

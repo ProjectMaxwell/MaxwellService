@@ -1,5 +1,6 @@
 package com.projectmaxwell.service.resource;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -12,12 +13,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 
-import com.projectmaxwell.exception.InvalidTokenException;
 import com.projectmaxwell.model.AcademicTerm;
 import com.projectmaxwell.service.dao.AcademicTermDAO;
 import com.projectmaxwell.service.dao.AcademicTermDAOImpl;
 import com.projectmaxwell.util.PhiAuthClient;
-import com.projectmaxwell.util.PhiAuthValidationResponse;
 
 @Path("/academicTerms")
 @Produces(MediaType.APPLICATION_JSON)
@@ -31,16 +30,8 @@ public class AcademicTermResource extends AbstractResource{
 	}
 	
 	@GET
+	@RolesAllowed({"CUD_system_metadata"})
 	public AcademicTerm[] getAcademicTerms(@HeaderParam("Authorization") String token){
-		PhiAuthValidationResponse validationResponse;
-		try {
-			validationResponse = PhiAuthClient.validateToken(token);
-		} catch(Exception e){
-			throw new InvalidTokenException(String.valueOf(Math.random()),
-					"Could not Authenticate token with PhiAuthService.");
-		}
-		String[] allowedScopes = {"CUD_system_metadata"};
-		hasScope(validationResponse, allowedScopes);
 		return academicTermDAO.getAcademicTerms();
 	}
 	
