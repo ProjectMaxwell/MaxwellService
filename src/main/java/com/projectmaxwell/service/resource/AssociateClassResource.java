@@ -12,7 +12,7 @@ import javax.ws.rs.core.MediaType;
 
 import com.projectmaxwell.model.AssociateClass;
 import com.projectmaxwell.service.dao.AssociateClassDAO;
-import com.projectmaxwell.service.dao.AssociateClassDAOImpl;
+import com.projectmaxwell.service.dao.impl.mysql.AssociateClassDAOImpl;
 
 @Path("/associateClasses")
 @Produces(MediaType.APPLICATION_JSON)

@@ -8,4 +8,6 @@ public interface EACMeetingResponseDAO {
 
 	EACMeeting createEACMeeting(EACMeeting meeting);
 
+	EACMeeting[] getEACMeetings(int numRows);
+
 }

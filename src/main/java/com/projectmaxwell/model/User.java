@@ -17,7 +17,7 @@ public class User {
 	private int pin;
 	private int associateClassId;
 	private String chapter;
-	private int userStatus;
+	private int userType;
 	
 	public String getFirstName() {
 		return firstName;
@@ -99,12 +99,12 @@ public class User {
 		this.chapter = chapter;
 	}
 
-	public int getUserStatus() {
-		return userStatus;
+	public int getUserType() {
+		return userType;
 	}
 
-	public void setUserStatus(int userStatus) {
-		this.userStatus = userStatus;
+	public void setUserType(int userStatus) {
+		this.userType = userStatus;
 	}
 	
 	

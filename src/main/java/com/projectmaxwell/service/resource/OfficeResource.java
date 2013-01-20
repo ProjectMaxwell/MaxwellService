@@ -7,7 +7,7 @@ import javax.ws.rs.Produces;
 
 import com.projectmaxwell.model.Office;
 import com.projectmaxwell.service.dao.OfficeDAO;
-import com.projectmaxwell.service.dao.OfficeDAOImpl;
+import com.projectmaxwell.service.dao.impl.mysql.OfficeDAOImpl;
 
 @Path("/offices")
 @Produces("application/json")

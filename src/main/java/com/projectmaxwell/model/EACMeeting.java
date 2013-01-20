@@ -6,7 +6,9 @@ import java.util.Calendar;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class EACMeeting {
 
 	private int id;
@@ -62,6 +64,9 @@ public class EACMeeting {
 	
 	@JsonProperty("date")
 	public String getCalendarAsString(){
+		if(calendar == null){
+			return null;
+		}
 		DateFormat df = new SimpleDateFormat("EEEE, MMMM dd hh:mm a z");
 		return df.format(calendar.getTime());
 	}

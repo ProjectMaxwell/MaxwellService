@@ -15,7 +15,7 @@ import javax.ws.rs.core.MediaType;
 
 import com.projectmaxwell.model.AcademicTerm;
 import com.projectmaxwell.service.dao.AcademicTermDAO;
-import com.projectmaxwell.service.dao.AcademicTermDAOImpl;
+import com.projectmaxwell.service.dao.impl.mysql.AcademicTermDAOImpl;
 import com.projectmaxwell.util.PhiAuthClient;
 
 @Path("/academicTerms")
