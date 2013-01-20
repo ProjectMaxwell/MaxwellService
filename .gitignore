@@ -11,3 +11,4 @@
 .classpath
 .settings*
 /src/main/resources/config.properties
+src/test/java/com/projectmaxwell/util/GDataClientTest.java
