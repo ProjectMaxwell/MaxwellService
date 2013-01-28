@@ -98,6 +98,7 @@ public class EACMeetingResponseDAOImpl extends AbstractMysqlDAOImpl implements
 				meeting.setGoogleMaps(result.getString("google_maps"));
 				meeting.setName(result.getString("name"));
 				meeting.setId(result.getInt("id"));
+				meeting.setWebsite(result.getString("website"));
 				meetings.add(0, meeting);
 			}
 		} catch (SQLException e) {
