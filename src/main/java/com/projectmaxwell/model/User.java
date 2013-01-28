@@ -4,7 +4,7 @@ import java.util.Date;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
-@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_DEFAULT)
 public class User {
 	
 	private Integer userId;
@@ -16,7 +16,7 @@ public class User {
 	private Integer yearGraduated;
 	private Integer pin;
 	private Integer associateClassId;
-	private String chapter;
+	private int chapterId;
 	private Integer userTypeId;
 	private Integer referredById;
 	private String highschool;
@@ -72,7 +72,7 @@ public class User {
 		return yearInitiated;
 	}
 
-	public void setYearInitiated(int yearInitiated) {
+	public void setYearInitiated(Integer yearInitiated) {
 		this.yearInitiated = yearInitiated;
 	}
 
@@ -80,7 +80,7 @@ public class User {
 		return yearGraduated;
 	}
 
-	public void setYearGraduated(int yearGraduated) {
+	public void setYearGraduated(Integer yearGraduated) {
 		this.yearGraduated = yearGraduated;
 	}
 
@@ -100,12 +100,12 @@ public class User {
 		this.associateClassId = associateClassId;
 	}
 
-	public String getChapter() {
-		return chapter;
+	public int getChapterId() {
+		return chapterId;
 	}
 
-	public void setChapter(String chapter) {
-		this.chapter = chapter;
+	public void setChapterId(int chapter) {
+		this.chapterId = chapter;
 	}
 
 	public Integer getUserTypeId() {
@@ -120,7 +120,7 @@ public class User {
 		return referredById;
 	}
 
-	public void setReferredById(int referredById) {
+	public void setReferredById(Integer referredById) {
 		this.referredById = referredById;
 	}
 

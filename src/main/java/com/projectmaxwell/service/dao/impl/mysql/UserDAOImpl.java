@@ -38,7 +38,7 @@ public class UserDAOImpl extends AbstractMysqlDAOImpl implements UserDAO {
 			user.setLastName(result.getString("last_name"));
 			user.setEmail(result.getString("email"));
 			user.setAssociateClassId(result.getInt("associate_class_id"));
-			user.setChapter(result.getString("chapter"));
+			user.setChapterId(result.getInt("chapter_id"));
 			user.setDateOfBirth(result.getDate("date_of_birth"));
 			user.setPin(result.getInt("pin"));
 			user.setUserTypeId(result.getInt("user_type_id"));
@@ -110,7 +110,11 @@ public class UserDAOImpl extends AbstractMysqlDAOImpl implements UserDAO {
 			}else{
 				call.setNull(8, Type.INT);
 			}
-			call.setString(9, user.getChapter());
+			if(user.getUserTypeId() != null){
+				call.setInt(9, user.getChapterId());
+			}else{
+				call.setNull(9, Type.INT);
+			}
 			if(user.getUserTypeId() != null){
 				call.setInt(10, user.getUserTypeId());
 			}else{
@@ -168,7 +172,11 @@ public class UserDAOImpl extends AbstractMysqlDAOImpl implements UserDAO {
 			call.setInt(6, newUser.getYearGraduated());
 			call.setInt(7, newUser.getPin());
 			call.setInt(8, newUser.getAssociateClassId());
-			call.setString(9, newUser.getChapter());
+			if(newUser.getChapterId() > 0){
+				call.setInt(9, newUser.getChapterId());
+			}else{
+				call.setNull(9, Type.INT);
+			}
 			call.setInt(10, newUser.getUserTypeId());
 			call.setInt(11, newUser.getUserId());
 			ResultSet result = call.executeQuery();

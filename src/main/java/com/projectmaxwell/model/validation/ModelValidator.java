@@ -118,7 +118,7 @@ public class ModelValidator {
 					"Recruits may not have a value for yearGraduated.  " +
 					"If this is an alumnus account, please use the appropriate user type.");
 		}
-		if(user.getChapter() != null){
+		if(user.getChapterId() > 0){
 			throw new InvalidParameterException(String.valueOf(Math.random()), 
 					"Recruits may not have a value for chapter.  " +
 					"If this is an alumnus account, please use the appropriate user type.");	
@@ -134,11 +134,11 @@ public class ModelValidator {
 			throw new MissingUserFieldException(String.valueOf(Math.random()),
 			"Required field 'associateClassId' did not map to a valid associate class");	
 		}
-		if(user.getChapter() != null){
+/*		if(user.getChapterId() > 0){
 			throw new InvalidParameterException(String.valueOf(Math.random()), 
 					"Undergrads may not have a value for chapter.  " +
 					"If this is an alumnus account, please use the appropriate user type.");	
-		}
+		}*/
 		if(user.getYearGraduated() != 0){
 			throw new InvalidParameterException(String.valueOf(Math.random()),
 					"Undergrads may not have a value for yearGraduated.  " +
