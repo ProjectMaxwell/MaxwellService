@@ -38,6 +38,7 @@ public class EACResource extends AbstractResource {
 	@GET
 	@Path("/meet-ups")
 	public EACMeeting[] getEACMeetings(@QueryParam("numRows") int numRows){
+		System.out.println(numRows);
 		return meetingResponseDAO.getEACMeetings(numRows);
 	}
 }

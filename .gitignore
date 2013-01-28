@@ -11,4 +11,5 @@
 .classpath
 .settings*
 /src/main/resources/config.properties
+/src/main/resources/RushListScraper.properties
 src/test/java/com/projectmaxwell/util/GDataClientTest.java

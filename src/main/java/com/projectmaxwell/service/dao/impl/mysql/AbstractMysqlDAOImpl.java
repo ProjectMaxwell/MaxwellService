@@ -5,7 +5,6 @@ import java.sql.Connection;
 import javax.ws.rs.WebApplicationException;
 
 import com.projectmaxwell.datasource.DatasourceConnection;
-import com.projectmaxwell.model.validation.ModelValidator;
 import com.projectmaxwell.service.dao.impl.AbstractDAOImpl;
 
 public abstract class AbstractMysqlDAOImpl extends AbstractDAOImpl {

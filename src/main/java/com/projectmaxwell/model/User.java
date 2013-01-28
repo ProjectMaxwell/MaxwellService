@@ -7,17 +7,26 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class User {
 	
-	private String userId;
+	private Integer userId;
 	private String firstName;
 	private String lastName;
 	private String email;
 	private Date dateOfBirth;
-	private int yearInitiated;
-	private int yearGraduated;
-	private int pin;
-	private int associateClassId;
+	private Integer yearInitiated;
+	private Integer yearGraduated;
+	private Integer pin;
+	private Integer associateClassId;
 	private String chapter;
-	private int userType;
+	private Integer userTypeId;
+	private Integer referredById;
+	private String highschool;
+	private String phoneNumber;
+	private String facebookId;
+	private String linkedInId;
+	private String twitterId;
+	private String googleAccountId;
+	private RecruitInfo recruitInfo;
+	
 	
 	public String getFirstName() {
 		return firstName;
@@ -27,11 +36,11 @@ public class User {
 		this.firstName = firstName;
 	}
 	
-	public String getUserId() {
+	public Integer getUserId() {
 		return userId;
 	}
 	
-	public void setUserId(String userId) {
+	public void setUserId(Integer userId) {
 		this.userId = userId;
 	}
 
@@ -59,7 +68,7 @@ public class User {
 		this.dateOfBirth = dateOfBirth;
 	}
 
-	public int getYearInitiated() {
+	public Integer getYearInitiated() {
 		return yearInitiated;
 	}
 
@@ -67,7 +76,7 @@ public class User {
 		this.yearInitiated = yearInitiated;
 	}
 
-	public int getYearGraduated() {
+	public Integer getYearGraduated() {
 		return yearGraduated;
 	}
 
@@ -75,7 +84,7 @@ public class User {
 		this.yearGraduated = yearGraduated;
 	}
 
-	public int getPin() {
+	public Integer getPin() {
 		return pin;
 	}
 
@@ -83,7 +92,7 @@ public class User {
 		this.pin = pin;
 	}
 
-	public int getAssociateClassId() {
+	public Integer getAssociateClassId() {
 		return associateClassId;
 	}
 
@@ -99,12 +108,76 @@ public class User {
 		this.chapter = chapter;
 	}
 
-	public int getUserType() {
-		return userType;
+	public Integer getUserTypeId() {
+		return userTypeId;
 	}
 
-	public void setUserType(int userStatus) {
-		this.userType = userStatus;
+	public void setUserTypeId(int userStatus) {
+		this.userTypeId = userStatus;
+	}
+
+	public Integer getReferredById() {
+		return referredById;
+	}
+
+	public void setReferredById(int referredById) {
+		this.referredById = referredById;
+	}
+
+	public String getHighschool() {
+		return highschool;
+	}
+
+	public void setHighschool(String highschool) {
+		this.highschool = highschool;
+	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public String getFacebookId() {
+		return facebookId;
+	}
+
+	public void setFacebookId(String facebookId) {
+		this.facebookId = facebookId;
+	}
+
+	public String getLinkedInId() {
+		return linkedInId;
+	}
+
+	public void setLinkedInId(String linkedInId) {
+		this.linkedInId = linkedInId;
+	}
+
+	public String getTwitterId() {
+		return twitterId;
+	}
+
+	public void setTwitterId(String twitterId) {
+		this.twitterId = twitterId;
+	}
+
+	public String getGoogleAccountId() {
+		return googleAccountId;
+	}
+
+	public void setGoogleAccountId(String googleAccountId) {
+		this.googleAccountId = googleAccountId;
+	}
+
+	public RecruitInfo getRecruitInfo() {
+		return recruitInfo;
+	}
+
+	public void setRecruitInfo(RecruitInfo recruitInfo) {
+		this.recruitInfo = recruitInfo;
 	}
 	
 	

@@ -67,7 +67,7 @@ public class EACMeeting {
 		if(calendar == null){
 			return null;
 		}
-		DateFormat df = new SimpleDateFormat("EEEE, MMMM dd hh:mm a z");
+		DateFormat df = new SimpleDateFormat("EEEE, MMMM dd hh:mm a");
 		return df.format(calendar.getTime());
 	}
 	
