@@ -126,6 +126,7 @@ public class ModelValidator {
 	}
 
 	private void validateAlumniUserCreation(User user) {
+		
 		throw new InvalidParameterException(String.valueOf(Math.random()), "Creation of alumni is not yet supported.");
 	}
 
