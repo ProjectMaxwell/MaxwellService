@@ -8,6 +8,7 @@ import com.google.gdata.data.appsforyourdomain.generic.GenericEntry;
 import com.google.gdata.data.appsforyourdomain.generic.GenericFeed;
 import com.projectmaxwell.exception.GoogleAppsDAOException;
 import com.projectmaxwell.model.MailingList;
+import com.projectmaxwell.model.MailingListEnum;
 import com.projectmaxwell.service.dao.MailingListDAO;
 
 public class MailingListDAOImpl extends AbstractGoogleDAOImpl implements MailingListDAO {
@@ -49,6 +50,12 @@ public class MailingListDAOImpl extends AbstractGoogleDAOImpl implements Mailing
 		}
 		
 		return emails.toArray(new String[emails.size()]);
+	}
+
+	@Override
+	public boolean addUserToMailingList(MailingListEnum mailingList) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 	
 }

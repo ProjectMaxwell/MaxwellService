@@ -41,9 +41,16 @@ public class UserResource {
 	}
 	
 	@POST
-	//@RolesAllowed({"create_user"})
+	@RolesAllowed({"create_user"})
 	public User createUser(User user) throws WebApplicationException{
-		return userDAO.createUser(user);
+		User returnedUser = userDAO.createUser(user);
+		if(returnedUser != null){
+			if(user.getUserTypeId() == 3){
+				//add to alumni lists
+				
+			}
+		}
+		return returnedUser;
 	}
 	
 	@PUT
