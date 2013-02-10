@@ -64,6 +64,11 @@ public class ModelValidator {
 			throw new InvalidParameterException(String.valueOf(Math.random()),
 					"Length of a phone number must be 12.  Pattern is 'xxx-yyy-zzzz'");
 		}
+		if(user.getUserTypeId() != 5 && user.getRecruitInfo() != null){
+			throw new InvalidParameterException(String.valueOf(Math.random()),
+					"The recruit info object may only be set for recruit users.");
+		}
+		
 		switch(user.getUserTypeId()){
 		//For 
 		case 1:
@@ -126,8 +131,8 @@ public class ModelValidator {
 	}
 
 	private void validateAlumniUserCreation(User user) {
-		
-		throw new InvalidParameterException(String.valueOf(Math.random()), "Creation of alumni is not yet supported.");
+		//No validation specific to alumni?
+		//throw new InvalidParameterException(String.valueOf(Math.random()), "Creation of alumni is not yet supported.");
 	}
 
 	public void validateUndergradUserCreation(User user){
@@ -140,7 +145,7 @@ public class ModelValidator {
 					"Undergrads may not have a value for chapter.  " +
 					"If this is an alumnus account, please use the appropriate user type.");	
 		}*/
-		if(user.getYearGraduated() != 0){
+		if(user.getYearGraduated() != null && user.getYearGraduated() != 0){
 			throw new InvalidParameterException(String.valueOf(Math.random()),
 					"Undergrads may not have a value for yearGraduated.  " +
 					"If this is an alumnus account, please use the appropriate user type.");

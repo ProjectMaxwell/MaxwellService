@@ -1,5 +1,8 @@
 package com.projectmaxwell.service.resource;
 
+import java.util.HashMap;
+import java.util.HashSet;
+
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -12,11 +15,15 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 
+import com.projectmaxwell.model.MailingList;
 import com.projectmaxwell.model.RecruitInfo;
 import com.projectmaxwell.model.User;
 import com.projectmaxwell.model.UserType;
+import com.projectmaxwell.service.dao.MailingListDAO;
 import com.projectmaxwell.service.dao.UserDAO;
+import com.projectmaxwell.service.dao.impl.csv.MailingListBatchImportDAOImpl;
 import com.projectmaxwell.service.dao.impl.mysql.UserDAOImpl;
+import com.projectmaxwell.service.dao.impl.sendloop.MailingListDAOImpl;
 
 @Path("/users")
 @Produces(MediaType.APPLICATION_JSON)
@@ -24,9 +31,32 @@ import com.projectmaxwell.service.dao.impl.mysql.UserDAOImpl;
 public class UserResource {
 
 	private UserDAO userDAO;
+	private HashMap<Integer,HashSet<MailingList>> mailingListMappings;
+	private MailingListDAO mailingListDAO;
+	private MailingListBatchImportDAOImpl mailingListBatchImportDAO;
 	
 	public UserResource(){
 		userDAO = new UserDAOImpl();
+		mailingListMappings = getMailingListMappings();
+		mailingListDAO = new MailingListDAOImpl();
+		mailingListBatchImportDAO = MailingListBatchImportDAOImpl.getInstance();
+	}
+	
+	protected final HashMap<Integer,HashSet<MailingList>> getMailingListMappings(){
+		HashMap<Integer,HashSet<MailingList>> map = new HashMap<Integer,HashSet<MailingList>>();
+		HashSet<MailingList> associateMailingLists = new HashSet<MailingList>();
+		HashSet<MailingList> initiateMailingLists = new HashSet<MailingList>();
+		HashSet<MailingList> alumnusMailingLists = new HashSet<MailingList>();
+		alumnusMailingLists.add(MailingList.SENDLOOP_EVERGREEN_ALUMNI_CLUB);
+		alumnusMailingLists.add(MailingList.SENDLOOP_ALPHA_PI_ALUMNI);
+		HashSet<MailingList> otherMailingLists = new HashSet<MailingList>();
+		HashSet<MailingList> recruitMailingLists = new HashSet<MailingList>();
+		map.put(1, associateMailingLists);
+		map.put(2, initiateMailingLists);
+		map.put(3, alumnusMailingLists);
+		map.put(4, otherMailingLists);
+		map.put(5, recruitMailingLists);
+		return map;
 	}
 	
 	@GET
@@ -44,11 +74,21 @@ public class UserResource {
 	@RolesAllowed({"create_user"})
 	public User createUser(User user) throws WebApplicationException{
 		User returnedUser = userDAO.createUser(user);
-		if(returnedUser != null){
-			if(user.getUserTypeId() == 3){
-				//add to alumni lists
-				
+		//If user creation worked, now add that user to the appropriate mailing lists!
+		if(returnedUser != null && user.getUserTypeId() != null && user.getEmail() != null){
+			//Batch Importer not yet setup to do this on a per mailing list basis
+			HashSet<MailingList> mailingLists = mailingListMappings.get(user.getUserTypeId());
+			for(MailingList list : mailingLists){
+				mailingListBatchImportDAO.writeToQueue(user, list.getId());
+				System.out.println("Adding user '" + user.getUserId() + "' to mailing list '" + list.name() + "'.");
 			}
+			/*			HashSet<MailingList> mailingLists = mailingListMappings.get(user.getUserTypeId());
+			if(mailingLists != null && mailingLists.size() > 0){
+				for(MailingList mailingList : mailingLists){
+					System.out.println("Adding user '" + user.getUserId() + "' to mailing list '" + mailingList.name() + "'.");
+					mailingListDAO.addUserToMailingList(mailingList, returnedUser);
+				}
+			}*/
 		}
 		return returnedUser;
 	}

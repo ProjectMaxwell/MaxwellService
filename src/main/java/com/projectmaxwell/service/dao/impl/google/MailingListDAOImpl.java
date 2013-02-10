@@ -7,15 +7,16 @@ import java.util.List;
 import com.google.gdata.data.appsforyourdomain.generic.GenericEntry;
 import com.google.gdata.data.appsforyourdomain.generic.GenericFeed;
 import com.projectmaxwell.exception.GoogleAppsDAOException;
+import com.projectmaxwell.model.MailingListOld;
 import com.projectmaxwell.model.MailingList;
-import com.projectmaxwell.model.MailingListEnum;
+import com.projectmaxwell.model.User;
 import com.projectmaxwell.service.dao.MailingListDAO;
 
 public class MailingListDAOImpl extends AbstractGoogleDAOImpl implements MailingListDAO {
 
 	@Override
-	public MailingList[] getMailingLists() {
-		ArrayList<MailingList> lists = new ArrayList<MailingList>();
+	public MailingListOld[] getMailingLists() {
+		ArrayList<MailingListOld> lists = new ArrayList<MailingListOld>();
 		GenericFeed feed;
 		try {
 			feed = groups.retrieveAllGroups();
@@ -26,12 +27,12 @@ public class MailingListDAOImpl extends AbstractGoogleDAOImpl implements Mailing
 		for(GenericEntry e : entries){ 
 			String s = e.getProperty("groupId");
 			System.out.println(s);
-			MailingList mailingList = new MailingList();
+			MailingListOld mailingList = new MailingListOld();
 			mailingList.setDescription(e.getProperty("description"));
 			mailingList.setEmailAddress(e.getProperty("groupId"));
 			lists.add(mailingList);
 		}
-		return lists.toArray(new MailingList[lists.size()]);
+		return lists.toArray(new MailingListOld[lists.size()]);
 	}
 
 	@Override
@@ -53,7 +54,7 @@ public class MailingListDAOImpl extends AbstractGoogleDAOImpl implements Mailing
 	}
 
 	@Override
-	public boolean addUserToMailingList(MailingListEnum mailingList) {
+	public boolean addUserToMailingList(MailingList mailingList, User user) {
 		// TODO Auto-generated method stub
 		return false;
 	}

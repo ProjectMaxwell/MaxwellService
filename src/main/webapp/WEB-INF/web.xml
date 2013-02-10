@@ -16,7 +16,7 @@
 	  
 		<init-param>
 			<param-name>cors.supportedHeaders</param-name>
-			<param-value>Content-Type, X-Requested-With, Accept, Authentication</param-value>
+			<param-value>Content-Type, X-Requested-With, Accept, Authentication, Authorization</param-value>
 		</init-param>
 	</filter>
 	
@@ -27,6 +27,9 @@
 
 	<listener>
 		<listener-class>com.projectmaxwell.datasource.DatasourceListener</listener-class>
+	</listener>
+	<listener>
+		<listener-class>com.projectmaxwell.service.util.SendloopContextListener</listener-class>
 	</listener>
 	
 	

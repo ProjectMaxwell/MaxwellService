@@ -110,7 +110,7 @@ public class UserDAOImpl extends AbstractMysqlDAOImpl implements UserDAO {
 			}else{
 				call.setNull(8, Type.INT);
 			}
-			if(user.getUserTypeId() != null){
+			if(user.getChapterId() > 0){
 				call.setInt(9, user.getChapterId());
 			}else{
 				call.setNull(9, Type.INT);

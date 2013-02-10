@@ -30,6 +30,7 @@ public class EACMeetingResponseDAOImpl extends AbstractMysqlDAOImpl implements
 				Date d = new Date(result.getLong("date"));
 				Calendar c = Calendar.getInstance(TimeZone.getTimeZone("PST"));
 				c.setTime(new Date(d.getTime() * 1000L));
+				response.setDate(d.getTime());
 				response.setCalendar(c);
 				response.setGoogleMaps(result.getString("google_maps"));
 				response.setName(result.getString("name"));
@@ -54,7 +55,7 @@ public class EACMeetingResponseDAOImpl extends AbstractMysqlDAOImpl implements
 			call.setString(1, meeting.getName());
 			call.setString(2, meeting.getWebsite());
 			call.setString(3, meeting.getGoogleMaps());
-			call.setInt(4, meeting.getDate());
+			call.setLong(4, meeting.getDate());
 			
 			ResultSet result = call.executeQuery();
 			if(result.next()){
@@ -95,6 +96,7 @@ public class EACMeetingResponseDAOImpl extends AbstractMysqlDAOImpl implements
 				Calendar c = Calendar.getInstance(TimeZone.getTimeZone("PST"));
 				c.setTime(new Date(d.getTime() * 1000L));
 				meeting.setCalendar(c);
+				meeting.setDate(d.getTime());
 				meeting.setGoogleMaps(result.getString("google_maps"));
 				meeting.setName(result.getString("name"));
 				meeting.setId(result.getInt("id"));

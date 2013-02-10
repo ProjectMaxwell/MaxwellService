@@ -7,7 +7,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
-import com.projectmaxwell.model.MailingList;
+import com.projectmaxwell.model.MailingListOld;
 import com.projectmaxwell.service.dao.MailingListDAO;
 import com.projectmaxwell.service.dao.impl.google.MailingListDAOImpl;
 
@@ -24,7 +24,7 @@ public class MailingListResource extends AbstractResource {
 	
 	@GET
 	@Path("/eac")
-	public MailingList[] getAlumniMailingLists(){
+	public MailingListOld[] getAlumniMailingLists(){
 		/*ArrayList<MailingList> lists = new ArrayList<MailingList>();
 		MailingList ml = new MailingList();
 		ml.setDescription("Fake Mailing List");
@@ -43,7 +43,7 @@ public class MailingListResource extends AbstractResource {
 	
 	@GET
 	@Path("/evergreenalumniclub/")
-	public MailingList[] getAlumniMailingListsAlias(){
+	public MailingListOld[] getAlumniMailingListsAlias(){
 		return getAlumniMailingLists();
 	}
 	

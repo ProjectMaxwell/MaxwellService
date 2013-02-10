@@ -15,7 +15,7 @@ public class EACMeeting {
 	private String name;
 	private String website;
 	private String googleMaps;
-	private int date;
+	private long date;
 	private Calendar calendar;
 	
 	public int getId() {
@@ -52,17 +52,17 @@ public class EACMeeting {
 		this.googleMaps = googleMaps;
 	}
 	
-	@JsonIgnore
-	public int getDate() {
+	@JsonProperty("date")
+	public long getDate() {
 		return date;
 	}
 	
 	@JsonProperty("date")
-	public void setDate(int date) {
-		this.date = date;
+	public void setDate(long l) {
+		this.date = l;
 	}
 	
-	@JsonProperty("date")
+	@JsonIgnore
 	public String getCalendarAsString(){
 		if(calendar == null){
 			return null;

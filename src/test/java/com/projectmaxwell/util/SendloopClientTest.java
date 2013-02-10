@@ -1,11 +1,20 @@
 package com.projectmaxwell.util;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import org.apache.http.NameValuePair;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import com.projectmaxwell.model.User;
+import com.projectmaxwell.service.dao.impl.sendloop.SendloopBrowseListResponse;
 import com.projectmaxwell.service.dao.impl.sendloop.SendloopClient;
+import com.projectmaxwell.service.dao.impl.sendloop.SendloopImportResponse;
+import com.projectmaxwell.service.dao.impl.sendloop.SendloopSubscriber;
 
 public class SendloopClientTest {
 
@@ -19,7 +28,7 @@ public class SendloopClientTest {
 		client.addBodyParam("EmailAddress","galactoise+" + gmailModified + "@gmail.com");	
 		NameValuePair subscriptionParam = client.addBodyParam("SubscriptionIP","24.19.233.55");
 
-		client.postRequest("Subscriber.Subscribe/json");
+		//client.postRequest("Subscriber.Subscribe/json");
 		
 		client.removeBodyParam(subscriptionParam);
 		
@@ -31,7 +40,7 @@ public class SendloopClientTest {
 		}
 		
 		client.addBodyParam("UnsubscriptionIP","24.19.233.55");
-		client.postRequest("Subscriber.Unsubscribe/json");
+		//client.postRequest("Subscriber.Unsubscribe/json");
 	}
 	
 	@Test
@@ -46,7 +55,32 @@ public class SendloopClientTest {
 		client.postRequest("Subscriber.Import/json");*/
 		User u = new User();
 		u.setEmail("galactoise+" + gmailModified + "@gmail.com");
-		client.importUserToList(u, "2");
+		u.setFirstName("Dirt");
+		u.setLastName("McGirt");
+		SendloopImportResponse response = client.importUserToList(u, "2");
+		assertNotNull(response);
+		assertTrue(response.isSuccess());
+		assertEquals(response.getTotalDuplicate(),0);
+		assertEquals(response.getTotalFailed(),0);
+		assertEquals(response.getTotalImported(),1);
+		assertEquals(response.getErrorCode(),0);
+		assertNull(response.getErrorFields());
+		assertNull(response.getErrorMessage());
+	}
+	
+	@Test
+	@Ignore
+	public void testSendloopClientBrowse(){
+		SendloopClient client = new SendloopClient();
+
+		SendloopBrowseListResponse response = client.browseList("2");
+		assertNotNull(response);
+		assertTrue(response.isSuccess());
+		assertNotNull(response.getSubscribers());
+		assertFalse(response.getSubscribers().length == 0);
+		for(SendloopSubscriber subscriber : response.getSubscribers()){
+			System.out.println(subscriber.getEmailAddress());
+		}
 	}
 	
 }

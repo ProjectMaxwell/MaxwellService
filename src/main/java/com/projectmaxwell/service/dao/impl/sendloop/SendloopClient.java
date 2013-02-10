@@ -18,6 +18,10 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
 
 import com.projectmaxwell.datasource.DatasourceConnection;
 import com.projectmaxwell.exception.DependentServiceException;
@@ -33,6 +37,7 @@ public class SendloopClient extends DefaultHttpClient{
 	private List<Header> headers;
 	
 	public static final String IMPORT_ENDPOINT = "Subscriber.Import/json";
+	private static final String BROWSE_ENDPOINT = "Subscriber.Browse/json";
 	
 	public SendloopClient(){
 		super(); 
@@ -52,7 +57,7 @@ public class SendloopClient extends DefaultHttpClient{
 		addHeader("Accept","application/json");
 	}
 	
-	public void postRequest(String path){
+	public <T> T postRequest(String path, TypeReference<T> type){
 		HttpPost post;
 		try {
 			post = new HttpPost(hostname + path);
@@ -69,21 +74,82 @@ public class SendloopClient extends DefaultHttpClient{
 			HttpResponse response = this.execute(post);
 			BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 			String line = "";
+			String jsonBody = "";
 			while ((line = rd.readLine()) != null) {
-				System.out.println(line);
+				jsonBody += line;
+			}
+			
+			System.out.println(jsonBody);
+			
+			if(type != null){
+				T responseObject = deserialize(jsonBody, type);
+				return (T) responseObject;
 			}
 		} catch (HttpException e) {
 			throw new SendloopDAOException(String.valueOf(Math.random()),"HTTP Request to Sendloop failed.  " + e.getMessage());
 		} catch (IOException e) {
 			throw new SendloopDAOException(String.valueOf(Math.random()),"IOException while contacting sendloop.");
 		}
+		return null;
 	}
 	
-	public void importUserToList(User user, String listId){
-		addBodyParam("ListID", listId);
-		addBodyParam("Subscribers[0][EmailAddress]",user.getEmail());
+	@SuppressWarnings("unchecked")
+	private <T> T deserialize(String jsonBody, TypeReference<T> type){
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			return (T) mapper.readValue(jsonBody, type);
+		} catch (Exception e) {
+			throw new SendloopDAOException(String.valueOf(Math.random()),"Could not deserialize Sendloop's JSON response due to exception.  " + e.getMessage());
+		}
+		//return null;
+	}
+	
+	public SendloopImportResponse importUserToList(User user, String listId){
+		System.out.println("ListID: " + listId);
+		System.out.println("Subscribers[0][EmailAddress]: " + user.getEmail());
+		System.out.println("Subscribers[0][CustomField2]: " + user.getFirstName() + " " + user.getLastName());
+//		NameValuePair listPair = addBodyParam("ListID", listId);
+//		NameValuePair emailAddressPair = addBodyParam("Subscribers[0][EmailAddress]",user.getEmail());
+//		NameValuePair namePair = addBodyParam("Subscribers[0][CustomField2]",user.getFirstName() + " " + user.getLastName());		
+		NameValuePair listPair = new BasicNameValuePair("ListID",listId);
+		NameValuePair emailAddressPair = new BasicNameValuePair("Subscribers[0][EmailAddress]",user.getEmail());
+		NameValuePair namePair = new BasicNameValuePair("Subscribers[0][CustomField2]",user.getFirstName() + " " + user.getLastName());
 		
-		postRequest(IMPORT_ENDPOINT);
+		//SendloopImportResponse response = postRequest(IMPORT_ENDPOINT, new TypeReference<SendloopImportResponse>(){});
+		
+/*		removeBodyParam(namePair);
+		removeBodyParam(emailAddressPair);
+		removeBodyParam(listPair);*/
+		
+		NameValuePair[] requestParams = new NameValuePair[3];
+		requestParams[0] = listPair;
+		requestParams[1] = emailAddressPair;
+		requestParams[2] = namePair;
+		return importUsersToList(requestParams);
+	}
+	
+	public SendloopImportResponse importUsersToList(NameValuePair[] requestParams){
+		
+		for(NameValuePair pair : requestParams){
+			addBodyParam(pair);
+		}
+		
+		SendloopImportResponse response = postRequest(IMPORT_ENDPOINT, new TypeReference<SendloopImportResponse>(){});
+		
+		for(NameValuePair pair : requestParams){
+			removeBodyParam(pair);
+		}
+		
+		return response;
+	}
+	
+	public SendloopBrowseListResponse browseList(String listId){
+		System.out.println("ListID: " + listId);
+		NameValuePair listPair = addBodyParam("ListID",listId);
+		SendloopBrowseListResponse response = postRequest(BROWSE_ENDPOINT, new TypeReference<SendloopBrowseListResponse>(){});
+		
+		removeBodyParam(listPair);
+		return response;
 	}
 
 	public String getHostname() {

@@ -1,13 +1,14 @@
 package com.projectmaxwell.service.dao.impl.sendloop;
 
+import com.projectmaxwell.model.MailingListOld;
 import com.projectmaxwell.model.MailingList;
-import com.projectmaxwell.model.MailingListEnum;
+import com.projectmaxwell.model.User;
 import com.projectmaxwell.service.dao.MailingListDAO;
 
 public class MailingListDAOImpl extends AbstractSendloopDAOImpl implements MailingListDAO {
 
 	@Override
-	public MailingList[] getMailingLists() {
+	public MailingListOld[] getMailingLists() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -19,8 +20,8 @@ public class MailingListDAOImpl extends AbstractSendloopDAOImpl implements Maili
 	}
 
 	@Override
-	public boolean addUserToMailingList(MailingListEnum mailingList) {
-		// TODO Auto-generated method stub
+	public boolean addUserToMailingList(MailingList mailingList, User user) {
+		client.importUserToList(user, mailingList.getId());
 		return false;
 	}
 
