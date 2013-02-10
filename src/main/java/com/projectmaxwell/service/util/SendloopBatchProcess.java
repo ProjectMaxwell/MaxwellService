@@ -1,24 +1,17 @@
 package com.projectmaxwell.service.util;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Properties;
 
 import org.apache.http.message.BasicNameValuePair;
 
-import au.com.bytecode.opencsv.CSVReader;
-import au.com.bytecode.opencsv.CSVWriter;
-
 import com.projectmaxwell.datasource.DatasourceConnection;
-import com.projectmaxwell.exception.InvalidFileException;
 import com.projectmaxwell.exception.PropertiesException;
-import com.projectmaxwell.model.MailingList;
 import com.projectmaxwell.model.MailingListTuple;
 import com.projectmaxwell.model.User;
 import com.projectmaxwell.service.dao.MailingListBatchImportDAO;
@@ -54,16 +47,6 @@ public class SendloopBatchProcess implements Runnable {
 				throw new PropertiesException(String.valueOf(Math.random()),"Couldn't retrieve property defining BatchImport CSV locations due to exception.  " + e.getMessage());
 			}
 			
-			/*try{
-				batchImportFile = new File(batchImportFileLocation);
-				if(!batchImportFile.exists()){
-					batchImportFile.createNewFile();
-				}
-			} catch (IOException e) {
-				System.out.println("Couldn't find csv import file defined in properties due to exception.  " + e.getMessage());
-				throw new PropertiesException(String.valueOf(Math.random()),"Couldn't find csv import file defined in properties due to exception.  " + e.getMessage());
-			}*/
-			
 			try{
 				batchImportFailuresFile = new File(batchImportFailuresFileLocation);
 				if(!batchImportFailuresFile.exists()){
@@ -81,31 +64,6 @@ public class SendloopBatchProcess implements Runnable {
 	
 	@Override
 	public void run() {
-		System.out.println("RUNNING.");
-
-		/*try{
-			batchImportFileReader = new FileReader(batchImportFile);
-		}catch(IOException e){
-			System.out.println("Couldn't get file reader for file.");
-			return;
-//			throw new PropertiesException(String.valueOf(Math.random()),"Couldn't get file reader from file due to exception.  " + e.getMessage());
-		}*/				
-/*		try {
-			batchImportFailuresFileWriter = new FileWriter(batchImportFailuresFile);
-		} catch (IOException e) {
-			System.out.println("Could not open up file writer to write to failures csv due to exception." + e.getMessage());
-			return;
-		}*/
-		
-/*    	CSVWriter writer;
-
-		try {
-			writer = new CSVWriter(batchImportFailuresFileWriter,',',CSVWriter.NO_QUOTE_CHARACTER);
-		} catch (Exception e) {
-			System.out.println("Could not get CSV writer from file." + e.getMessage());
-			return;
-			//throw new InvalidFileException(String.valueOf(Math.random()),"Could not open sendloop batch import csv file.  " + e.getMessage()); 
-		}*/
 		
 		HashSet<BasicNameValuePair> requestParams = new HashSet<BasicNameValuePair>();
     	
@@ -141,13 +99,7 @@ public class SendloopBatchProcess implements Runnable {
     	
     	SendloopImportResponse importResponse = client.importUsersToList(requestParams.toArray(new BasicNameValuePair[requestParams.size()]));
     	if(!importResponse.isSuccess()){
-    		System.out.println("Import failed.");  		
-/*    		try {
-    			closeCSVHandlers(reader, writer);	
-    		} catch (IOException e) {
-    			System.out.println("Could not close connection to filewriters.");
-    			return;
-    		}*/
+    		System.out.println("Import failed.");
     		return;
     	}
     	

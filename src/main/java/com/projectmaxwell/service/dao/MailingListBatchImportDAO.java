@@ -3,7 +3,6 @@ package com.projectmaxwell.service.dao;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import com.projectmaxwell.model.MailingList;
 import com.projectmaxwell.model.User;
 
 public interface MailingListBatchImportDAO {

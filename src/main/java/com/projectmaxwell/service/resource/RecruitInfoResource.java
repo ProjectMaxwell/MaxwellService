@@ -11,12 +11,12 @@ import com.projectmaxwell.model.RecruitInfo;
 
 @Produces("application/json")
 @Consumes("application/json")
+@Path("users/recruitInfo")
 public class RecruitInfoResource extends AbstractResource {
 
 	@POST
 	public RecruitInfo createRecruitInfo(@PathParam("userId") String userId, RecruitInfo recruitInfo){
 		RecruitInfo info = new RecruitInfo();
-//		info.setUserId(recruitInfo.getUserId());
 		info.setRecruitSourceId(recruitInfo.getRecruitSourceId());
 		info.setRecruitEngagementLevelId(recruitInfo.getRecruitEngagementLevelId());
 		return info;
@@ -25,7 +25,6 @@ public class RecruitInfoResource extends AbstractResource {
 	@GET
 	public RecruitInfo getRecruitInfo(@PathParam("userId") String userId){
 		RecruitInfo info = new RecruitInfo();
-//		info.setUserId(1);
 		info.setRecruitSourceId(1);
 		info.setRecruitEngagementLevelId(1);
 		return info;

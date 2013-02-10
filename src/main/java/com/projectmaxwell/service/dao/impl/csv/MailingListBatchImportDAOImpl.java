@@ -8,15 +8,12 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Properties;
 
-import org.apache.http.message.BasicNameValuePair;
-
 import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.CSVWriter;
 
 import com.projectmaxwell.datasource.DatasourceConnection;
 import com.projectmaxwell.exception.InvalidFileException;
 import com.projectmaxwell.exception.PropertiesException;
-import com.projectmaxwell.model.MailingList;
 import com.projectmaxwell.model.User;
 import com.projectmaxwell.service.dao.MailingListBatchImportDAO;
 
@@ -107,7 +104,6 @@ public class MailingListBatchImportDAOImpl extends AbstractCSVDAOImpl implements
 						}
 						users.add(u);
 						String mailingListId = nextLine[0];
-						System.out.println(mailingListId);
 						if(listUserMappings.containsKey(mailingListId)){
 							listUserMappings.get(mailingListId).add(u);
 						}else{

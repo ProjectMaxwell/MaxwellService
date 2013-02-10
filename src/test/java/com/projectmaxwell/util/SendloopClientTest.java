@@ -69,11 +69,10 @@ public class SendloopClientTest {
 	}
 	
 	@Test
-	@Ignore
 	public void testSendloopClientBrowse(){
 		SendloopClient client = new SendloopClient();
 
-		SendloopBrowseListResponse response = client.browseList("2");
+		SendloopBrowseListResponse response = client.browseList("4");
 		assertNotNull(response);
 		assertTrue(response.isSuccess());
 		assertNotNull(response.getSubscribers());

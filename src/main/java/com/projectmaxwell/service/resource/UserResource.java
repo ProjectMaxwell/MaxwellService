@@ -19,11 +19,9 @@ import com.projectmaxwell.model.MailingList;
 import com.projectmaxwell.model.RecruitInfo;
 import com.projectmaxwell.model.User;
 import com.projectmaxwell.model.UserType;
-import com.projectmaxwell.service.dao.MailingListDAO;
 import com.projectmaxwell.service.dao.UserDAO;
 import com.projectmaxwell.service.dao.impl.csv.MailingListBatchImportDAOImpl;
 import com.projectmaxwell.service.dao.impl.mysql.UserDAOImpl;
-import com.projectmaxwell.service.dao.impl.sendloop.MailingListDAOImpl;
 
 @Path("/users")
 @Produces(MediaType.APPLICATION_JSON)
@@ -32,13 +30,11 @@ public class UserResource {
 
 	private UserDAO userDAO;
 	private HashMap<Integer,HashSet<MailingList>> mailingListMappings;
-	private MailingListDAO mailingListDAO;
 	private MailingListBatchImportDAOImpl mailingListBatchImportDAO;
 	
 	public UserResource(){
 		userDAO = new UserDAOImpl();
 		mailingListMappings = getMailingListMappings();
-		mailingListDAO = new MailingListDAOImpl();
 		mailingListBatchImportDAO = MailingListBatchImportDAOImpl.getInstance();
 	}
 	
