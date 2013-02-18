@@ -1,5 +1,9 @@
 package com.projectmaxwell.model;
 
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
+
+@JsonSerialize(include = Inclusion.NON_DEFAULT)
 public class AssociateClass {
 
 	private int associateClassId;

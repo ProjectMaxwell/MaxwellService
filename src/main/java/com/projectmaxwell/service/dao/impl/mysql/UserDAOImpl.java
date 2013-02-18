@@ -70,7 +70,11 @@ public class UserDAOImpl extends AbstractMysqlDAOImpl implements UserDAO {
 				user.setFirstName(result.getString("first_name"));
 				user.setLastName(result.getString("last_name"));
 				user.setEmail(result.getString("email"));
-				user.setAssociateClassId(result.getInt("associate_class_id"));
+				Integer associateClassId = result.getInt("associate_class_id");
+				if(!result.wasNull()){
+					user.setAssociateClassId(associateClassId);
+				}
+				
 				userSet.add(user);
 			}
 		}catch(SQLException sqle){
