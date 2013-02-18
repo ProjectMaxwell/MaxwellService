@@ -69,6 +69,7 @@ public class SendloopClientTest {
 	}
 	
 	@Test
+	@Ignore
 	public void testSendloopClientBrowse(){
 		SendloopClient client = new SendloopClient();
 

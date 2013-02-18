@@ -5,7 +5,7 @@ import com.projectmaxwell.model.User;
 import com.projectmaxwell.exception.InvalidParameterException;
 import com.projectmaxwell.exception.MissingUserFieldException;
 import com.projectmaxwell.exception.NoValidatorExistsException;
-import com.projectmaxwell.phiauth.service.SupportedHttpMethods;
+import com.projectmaxwell.service.SupportedHttpMethods;
 
 public class ModelValidator {
 
