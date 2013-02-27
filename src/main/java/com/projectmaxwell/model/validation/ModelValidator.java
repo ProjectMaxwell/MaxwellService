@@ -1,10 +1,13 @@
 package com.projectmaxwell.model.validation;
 
+import com.projectmaxwell.model.EACMeeting;
 import com.projectmaxwell.model.RecruitInfo;
 import com.projectmaxwell.model.User;
+import com.projectmaxwell.exception.InvalidFieldValueException;
 import com.projectmaxwell.exception.InvalidParameterException;
 import com.projectmaxwell.exception.MissingUserFieldException;
 import com.projectmaxwell.exception.NoValidatorExistsException;
+import com.projectmaxwell.exception.UnableToValidateException;
 import com.projectmaxwell.service.SupportedHttpMethods;
 
 public class ModelValidator {
@@ -180,13 +183,28 @@ public class ModelValidator {
 	}
 
 	public void validateRecruitInfo(RecruitInfo recruitInfo) {
+		if(recruitInfo == null){
+			throw new MissingUserFieldException(String.valueOf(Math.random()),
+					"Required field 'recruitInfo' is null or invalid");
+		}
 		if(recruitInfo.getRecruitEngagementLevelId() == null || recruitInfo.getRecruitEngagementLevelId() < 1){
 			throw new MissingUserFieldException(String.valueOf(Math.random()),
-					"Required field 'recruitInfo.recruitEngagementLevelId' is nullor invalid");
+					"Required field 'recruitInfo.recruitEngagementLevelId' is null or invalid");
 		}
 		if(recruitInfo.getRecruitSourceId() == null || recruitInfo.getRecruitSourceId() < 1){
 			throw new MissingUserFieldException(String.valueOf(Math.random()),
-					"Required field 'recruitInfo.recruitSourceId' is nullor invalid");
+					"Required field 'recruitInfo.recruitSourceId' is null or invalid");
+		}
+	}
+	
+	public void validateEACMeeting(EACMeeting meeting){
+		if(meeting == null){
+			throw new UnableToValidateException(String.valueOf(Math.random()),
+					"EAC Meeting object is null or invalid.");
+		}
+		if(meeting.getName() == null || meeting.getName().length() < 1){
+			throw new InvalidFieldValueException(String.valueOf(Math.random()),
+					"Required field 'name' is null or invalid.");
 		}
 	}
 
