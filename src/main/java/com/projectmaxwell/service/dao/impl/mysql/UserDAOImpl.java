@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.logging.Logger;
 
 import javax.ws.rs.WebApplicationException;
 
@@ -20,6 +21,8 @@ import com.projectmaxwell.service.dao.impl.mysql.AbstractMysqlDAOImpl;
 
 public class UserDAOImpl extends AbstractMysqlDAOImpl implements UserDAO {
 
+	Logger LOGGER = Logger.getLogger(UserDAOImpl.class.getName());
+	
 	public UserDAOImpl(){
 		super();
 	}
@@ -48,7 +51,7 @@ public class UserDAOImpl extends AbstractMysqlDAOImpl implements UserDAO {
 		}catch(SQLException sqle){
 			throw new WebApplicationException(sqle);
 		}finally{
-//			releaseConnection();			
+			releaseConnection();			
 		}
 		return user;
 	}
@@ -198,14 +201,57 @@ public class UserDAOImpl extends AbstractMysqlDAOImpl implements UserDAO {
 		validator.validateRecruitInfo(recruitInfo);
 		
 		try {
-			CallableStatement call = con.prepareCall("CALL create_recruit_info(?,?,?)");
+			CallableStatement call = con.prepareCall("CALL create_recruit_info(?,?,?,?,?,?,?,?,?,?)");
 			call.setInt(1, userId);
 			call.setInt(2, recruitInfo.getRecruitSourceId());
 			call.setInt(3, recruitInfo.getRecruitEngagementLevelId());
-			
+			if(recruitInfo.getRushListUserId() != null){
+				call.setInt(4, recruitInfo.getRushListUserId());
+			}else{
+				call.setNull(4, Type.INT);
+			}
+			if(recruitInfo.getGpa() != null){
+				call.setDouble(5, recruitInfo.getGpa());
+			}else{
+				call.setNull(5, Type.DOUBLE);
+			}
+			call.setString(6, recruitInfo.getClassStanding());
+			call.setString(7, recruitInfo.getLifeExperiences());
+			call.setString(8, recruitInfo.getLookingFor());
+			call.setString(9, recruitInfo.getExpectations());
+			call.setString(10, recruitInfo.getExtracurriculars());
 			call.execute();
 		} catch (SQLException e) {
 			throw new MySQLException(String.valueOf(Math.random()),"MySQL threw exception: " + e.getMessage());
+		}finally{
+			releaseConnection();
+		}
+		return recruitInfo;
+	}
+	
+	@Override
+	public RecruitInfo getRecruitInfoByUserId(int userId) throws WebApplicationException{
+		RecruitInfo recruitInfo = new RecruitInfo();
+		
+		try{
+			CallableStatement call = con.prepareCall("CALL get_recruit_info_by_user_id(?)");
+			call.setInt(1, userId);
+			ResultSet result = call.executeQuery();
+			result.next();
+			recruitInfo.setRecruitEngagementLevelId(result.getInt("recruit_engagement_level_id"));
+			recruitInfo.setRecruitSourceId(result.getInt("recruit_source_id"));
+			recruitInfo.setDateAdded(result.getLong("date_added"));
+			recruitInfo.setRushListUserId(result.getInt("rush_list_user_id"));
+			recruitInfo.setGpa(result.getDouble("gpa"));
+			recruitInfo.setClassStanding(result.getString("class_standing"));
+			recruitInfo.setLifeExperiences(result.getString("life_experiences"));
+			recruitInfo.setLookingFor(result.getString("looking_for"));
+			recruitInfo.setExpectations(result.getString("expectations"));
+			recruitInfo.setExtracurriculars(result.getString("extracurriculars"));
+		}catch(SQLException sqle){
+			throw new WebApplicationException(sqle);
+		}finally{
+			releaseConnection();			
 		}
 		return recruitInfo;
 	}
