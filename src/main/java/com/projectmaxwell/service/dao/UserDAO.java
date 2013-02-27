@@ -19,4 +19,6 @@ public interface UserDAO {
 	public RecruitInfo createRecruitInfo(RecruitInfo recruitInfo, int userId);
 	
 	public UserType[] getUserTypes();
+
+	public RecruitInfo getRecruitInfoByUserId(int userId);
 }

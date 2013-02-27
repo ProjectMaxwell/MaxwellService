@@ -8,7 +8,6 @@ import javax.ws.rs.WebApplicationException;
 
 import com.projectmaxwell.datasource.DatasourceConnection;
 import com.projectmaxwell.service.dao.impl.AbstractDAOImpl;
-import com.projectmaxwell.service.resource.filter.PhiAuthSecurityContext;
 
 public abstract class AbstractMysqlDAOImpl extends AbstractDAOImpl {
 
@@ -21,16 +20,18 @@ public abstract class AbstractMysqlDAOImpl extends AbstractDAOImpl {
 		try{
 			con = DatasourceConnection.getConnection();
 		}catch(Exception e){
+			LOGGER.log(Level.SEVERE,"Could not get new connection - operation will fail.");
 			throw new WebApplicationException(e);
 		}
 	}
 	
 	public void releaseConnection() throws WebApplicationException{
 		try{
-			con.close();
-			con = null;
-			LOGGER.log(Level.SEVERE,"Releasing connection.");
+			if(!con.isClosed()){
+				con.close();
+			}
 		}catch(Exception e){
+			LOGGER.log(Level.WARNING,"Could not release connection - this may lead to a memory leak.");
 			throw new WebApplicationException(e);
 		}
 	}

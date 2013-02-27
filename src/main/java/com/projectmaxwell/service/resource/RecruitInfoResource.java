@@ -11,7 +11,6 @@ import com.projectmaxwell.model.RecruitInfo;
 
 @Produces("application/json")
 @Consumes("application/json")
-@Path("users/recruitInfo")
 public class RecruitInfoResource extends AbstractResource {
 
 	@POST

@@ -62,7 +62,7 @@ public class UserResource {
 	
 	@GET
 	@Path("/{userId}")
-	public User getUserByUsername(@PathParam("userId") int userId){
+	public User getUserById(@PathParam("userId") int userId){
 		return userDAO.getUserById(userId);		
 	}
 	
@@ -100,7 +100,6 @@ public class UserResource {
 	@Path("/{userId}/recruitInfo")
 	public RecruitInfo createRecruitInfo(@PathParam("userId") String userId, RecruitInfo recruitInfo){
 		RecruitInfo info = new RecruitInfo();
-//		info.setUserId(recruitInfo.getUserId());
 		info.setRecruitSourceId(recruitInfo.getRecruitSourceId());
 		info.setRecruitEngagementLevelId(recruitInfo.getRecruitEngagementLevelId());
 		return info;
@@ -108,12 +107,8 @@ public class UserResource {
 	
 	@GET
 	@Path("/{userId}/recruitInfo")
-	public RecruitInfo getRecruitInfo(@PathParam("userId") String userId){
-		RecruitInfo info = new RecruitInfo();
-//		info.setUserId(1);
-		info.setRecruitSourceId(1);
-		info.setRecruitEngagementLevelId(1);
-		return info;
+	public RecruitInfo getRecruitInfoByUserId(@PathParam("userId") int userId){
+		return userDAO.getRecruitInfoByUserId(userId);
 	}
 	
 	@GET
