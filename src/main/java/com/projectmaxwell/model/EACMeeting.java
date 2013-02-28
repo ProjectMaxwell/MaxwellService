@@ -1,22 +1,14 @@
 package com.projectmaxwell.model;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-
-import org.codehaus.jackson.annotate.JsonIgnore;
-import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class EACMeeting {
 
 	private int id;
-	private String name;
+	private String location;
 	private String website;
 	private String googleMaps;
 	private long date;
-	private Calendar calendar;
 	
 	public int getId() {
 		return id;
@@ -25,15 +17,11 @@ public class EACMeeting {
 	public void setId(int id) {
 		this.id = id;
 	}
-	
-	@JsonProperty("location")
-	public String getName() {
-		return name;
+	public String getLocation() {
+		return location;
 	}
-	
-	@JsonProperty("location")
-	public void setName(String name) {
-		this.name = name;
+	public void setLocation(String name) {
+		this.location = name;
 	}
 	
 	public String getWebsite() {
@@ -51,33 +39,11 @@ public class EACMeeting {
 	public void setGoogleMaps(String googleMaps) {
 		this.googleMaps = googleMaps;
 	}
-	
-	@JsonProperty("date")
 	public long getDate() {
 		return date;
 	}
-	
-	@JsonProperty("date")
-	public void setDate(long l) {
-		this.date = l;
-	}
-	
-	@JsonIgnore
-	public String getCalendarAsString(){
-		if(calendar == null){
-			return null;
-		}
-		DateFormat df = new SimpleDateFormat("EEEE, MMMM dd hh:mm a");
-		return df.format(calendar.getTime());
-	}
-	
-	@JsonIgnore
-	public Calendar getCalendar(){
-		return calendar;
-	}
-
-	public void setCalendar(Calendar calendar) {
-		this.calendar = calendar;
+	public void setDate(long date) {
+		this.date = date;
 	}
 	
 	

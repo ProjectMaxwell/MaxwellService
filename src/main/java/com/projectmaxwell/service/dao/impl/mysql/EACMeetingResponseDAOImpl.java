@@ -4,9 +4,6 @@ import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.TimeZone;
 
 import javax.ws.rs.WebApplicationException;
 
@@ -27,13 +24,9 @@ public class EACMeetingResponseDAOImpl extends AbstractMysqlDAOImpl implements
 			call.setInt(1, currentTime);
 			ResultSet result = call.executeQuery();
 			if(result.next()){
-				Date d = new Date(result.getLong("date"));
-				Calendar c = Calendar.getInstance(TimeZone.getTimeZone("PST"));
-				c.setTime(new Date(d.getTime() * 1000L));
-				response.setDate(d.getTime());
-				response.setCalendar(c);
+				response.setDate(result.getLong("date"));
 				response.setGoogleMaps(result.getString("google_maps"));
-				response.setName(result.getString("name"));
+				response.setLocation(result.getString("name"));
 				response.setWebsite(result.getString("website"));
 				response.setId(result.getInt("id"));
 				return response;
@@ -49,22 +42,18 @@ public class EACMeetingResponseDAOImpl extends AbstractMysqlDAOImpl implements
 
 	@Override
 	public EACMeeting createEACMeeting(EACMeeting meeting) {
+		validator.validateEACMeeting(meeting);
 		
 		try{
 			CallableStatement call = con.prepareCall("CALL create_EAC_meeting(?,?,?,?)");
-			call.setString(1, meeting.getName());
+			call.setString(1, meeting.getLocation());
 			call.setString(2, meeting.getWebsite());
 			call.setString(3, meeting.getGoogleMaps());
 			call.setLong(4, meeting.getDate());
 			
 			ResultSet result = call.executeQuery();
 			if(result.next()){
-				Date d = new Date(meeting.getDate());
-				Calendar c = Calendar.getInstance(TimeZone.getTimeZone("PST"));
-				c.setTime(new Date(d.getTime() * 1000L));
-				meeting.setCalendar(c);
 				meeting.setId(result.getInt("id"));
-				
 				return meeting;
 			}else{
 				throw new WebApplicationException();
@@ -92,13 +81,9 @@ public class EACMeetingResponseDAOImpl extends AbstractMysqlDAOImpl implements
 			
 			while(result.next()){
 				EACMeeting meeting = new EACMeeting();
-				Date d = new Date(result.getLong("date"));
-				Calendar c = Calendar.getInstance(TimeZone.getTimeZone("PST"));
-				c.setTime(new Date(d.getTime() * 1000L));
-				meeting.setCalendar(c);
-				meeting.setDate(d.getTime());
+				meeting.setDate(result.getLong("date"));
 				meeting.setGoogleMaps(result.getString("google_maps"));
-				meeting.setName(result.getString("name"));
+				meeting.setLocation(result.getString("name"));
 				meeting.setId(result.getInt("id"));
 				meeting.setWebsite(result.getString("website"));
 				meetings.add(0, meeting);

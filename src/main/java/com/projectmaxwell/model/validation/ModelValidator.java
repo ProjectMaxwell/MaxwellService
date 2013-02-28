@@ -202,10 +202,28 @@ public class ModelValidator {
 			throw new UnableToValidateException(String.valueOf(Math.random()),
 					"EAC Meeting object is null or invalid.");
 		}
-		if(meeting.getName() == null || meeting.getName().length() < 1){
+		if(meeting.getLocation() == null || meeting.getLocation().trim().length() < 1){
 			throw new InvalidFieldValueException(String.valueOf(Math.random()),
-					"Required field 'name' is null or invalid.");
+					"Required field 'location' is null or invalid.");
 		}
+		if(meeting.getDate() < 946713600){
+			throw new InvalidFieldValueException(String.valueOf(Math.random()),
+					"Required field 'date' may not be empty/null, and must represent a timestamp no earlier than the year 2000.");
+		}
+		if(meeting.getDate() > 2147483647){
+			throw new InvalidFieldValueException(String.valueOf(Math.random()),
+					"Required field 'date' may not be represented by a timestamp larger than the maximum 32-bit unix timestamp value." +
+					"  Thanks for trying, though.");
+		}
+		if(meeting.getGoogleMaps() == null || meeting.getGoogleMaps().trim().length() < 1){
+			throw new InvalidFieldValueException(String.valueOf(Math.random()),
+					"Required field 'googleMaps' is null or invalid.");
+		}
+		if(meeting.getWebsite() != null && meeting.getWebsite().trim().length() < 1){
+			throw new InvalidFieldValueException(String.valueOf(Math.random()),
+					"Required field 'website' is optional, but may not consist of an empty string or a whitespace-only string.");
+		}
+		
 	}
 
 }

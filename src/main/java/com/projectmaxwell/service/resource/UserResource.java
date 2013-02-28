@@ -99,10 +99,11 @@ public class UserResource {
 	@POST
 	@Path("/{userId}/recruitInfo")
 	public RecruitInfo createRecruitInfo(@PathParam("userId") String userId, RecruitInfo recruitInfo){
-		RecruitInfo info = new RecruitInfo();
+/*		RecruitInfo info = new RecruitInfo();
 		info.setRecruitSourceId(recruitInfo.getRecruitSourceId());
 		info.setRecruitEngagementLevelId(recruitInfo.getRecruitEngagementLevelId());
-		return info;
+		return info;*/
+		return userDAO.createRecruitInfo(recruitInfo, Integer.valueOf(userId));
 	}
 	
 	@GET
