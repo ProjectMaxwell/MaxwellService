@@ -1,6 +1,7 @@
 package com.projectmaxwell.model.validation;
 
 import com.projectmaxwell.model.EACMeeting;
+import com.projectmaxwell.model.RecruitContact;
 import com.projectmaxwell.model.RecruitInfo;
 import com.projectmaxwell.model.User;
 import com.projectmaxwell.exception.InvalidFieldValueException;
@@ -224,6 +225,34 @@ public class ModelValidator {
 					"Required field 'website' is optional, but may not consist of an empty string or a whitespace-only string.");
 		}
 		
+	}
+	
+	public void validateRecruitContact(RecruitContact recruitContact){
+		if(recruitContact == null){
+			throw new UnableToValidateException(String.valueOf(Math.random()),
+					"Recruit Contact object is null or invalid.");
+		}
+		if(recruitContact.getRecruitContactTypeId() < 1){
+			throw new InvalidFieldValueException(String.valueOf(Math.random()),
+					"Required field 'recruitContactTypeId' is null or invalid.");
+		}
+		if(recruitContact.getRecruitUserId() < 1){
+			throw new InvalidFieldValueException(String.valueOf(Math.random()),
+					"Required field 'recruitUserId' is null or invalid.");
+		}
+		if(recruitContact.getRecruitContactorUserId() < 1){
+			throw new InvalidFieldValueException(String.valueOf(Math.random()),
+					"Required field 'recruitContactorUserId' is null or invalid.");
+		}
+		if(recruitContact.getContactTimestamp() < 946713600){
+			throw new InvalidFieldValueException(String.valueOf(Math.random()),
+					"Required field 'contactTimestamp' may not be empty/null, and must represent a timestamp no earlier than the year 2000.");
+		}
+		if(recruitContact.getContactTimestamp() > 2147483647){
+			throw new InvalidFieldValueException(String.valueOf(Math.random()),
+					"Required field 'contactTimestamp' may not be represented by a timestamp larger than the maximum 32-bit unix timestamp value." +
+					"  Thanks for trying, though.");
+		}
 	}
 
 }

@@ -11,4 +11,6 @@ public interface RecruitContactDAO {
 			Integer recruitUserId, Integer recruitContactorUserId,
 			Integer maxResults);
 	
+	public RecruitContact recordRecruitContact(RecruitContact recruitContact);
+	
 }

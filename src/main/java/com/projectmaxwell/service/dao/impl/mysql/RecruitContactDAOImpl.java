@@ -79,4 +79,29 @@ public class RecruitContactDAOImpl extends AbstractMysqlDAOImpl implements Recru
 		}
 		return recruitContactList.toArray(new RecruitContact[recruitContactList.size()]);
 	}
+
+	@Override
+	public RecruitContact recordRecruitContact(RecruitContact recruitContact) {
+		validator.validateRecruitContact(recruitContact);
+		try {
+			CallableStatement call = con.prepareCall("CALL record_recruit_contact(?,?,?,?,?)");
+			call.setInt(1, recruitContact.getRecruitContactTypeId());
+			call.setInt(2, recruitContact.getRecruitUserId());
+			call.setInt(3, recruitContact.getRecruitContactorUserId());
+			call.setInt(4, recruitContact.getContactTimestamp());
+			call.setString(5, recruitContact.getNotes());
+			
+			ResultSet result = call.executeQuery();
+			if(result.next()){
+				recruitContact.setRecruitContactId(result.getInt("id"));
+			}else{
+				throw new WebApplicationException();
+			}
+		} catch (SQLException sqle) {
+			throw new WebApplicationException(sqle);
+		}finally{
+			releaseConnection();
+		}
+		return recruitContact;
+	}
 }
