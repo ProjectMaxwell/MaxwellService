@@ -92,8 +92,8 @@ public class UserResource {
 	@PUT
 	@Path("/{userId}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public User updateUser(User user) throws WebApplicationException{
-		return userDAO.updateUser(user);
+	public User updateUser(User user, @PathParam("userId") int userId) throws WebApplicationException{
+		return userDAO.updateUser(user, userId);
 	}
 	
 	@POST

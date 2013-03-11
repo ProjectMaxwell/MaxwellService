@@ -16,7 +16,7 @@ public class RecruitInfo {
 	private String expectations;
 	private String extracurriculars;
 	private Double gpa;
-	private Long dateAdded;
+	private Long dateCreated;
 	private Long dateModified;
 	
 /*	public int getUserId() {
@@ -99,12 +99,12 @@ public class RecruitInfo {
 		this.gpa = gpa;
 	}
 
-	public Long getDateAdded() {
-		return dateAdded;
+	public Long getDateCreated() {
+		return dateCreated;
 	}
 
-	public void setDateAdded(Long dateAdded) {
-		this.dateAdded = dateAdded;
+	public void setDateCreated(Long dateCreated) {
+		this.dateCreated = dateCreated;
 	}
 
 	public Long getDateModified() {

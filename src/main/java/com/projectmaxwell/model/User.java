@@ -26,6 +26,8 @@ public class User {
 	private String twitterId;
 	private String googleAccountId;
 	private RecruitInfo recruitInfo;
+	private Integer dateCreated;
+	private Integer dateModified;
 	
 	
 	public String getFirstName() {
@@ -178,6 +180,22 @@ public class User {
 
 	public void setRecruitInfo(RecruitInfo recruitInfo) {
 		this.recruitInfo = recruitInfo;
+	}
+
+	public Integer getDateCreated() {
+		return dateCreated;
+	}
+
+	public void setDateCreated(Integer dateCreated) {
+		this.dateCreated = dateCreated;
+	}
+
+	public Integer getDateModified() {
+		return dateModified;
+	}
+
+	public void setDateModified(Integer dateModified) {
+		this.dateModified = dateModified;
 	}
 	
 	

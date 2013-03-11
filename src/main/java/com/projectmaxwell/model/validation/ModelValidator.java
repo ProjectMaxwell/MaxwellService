@@ -39,11 +39,6 @@ public class ModelValidator {
 	}
 	
 	public void validateUser(User user) throws InvalidParameterException {
-		if(user.getUserId() != null){
-			throw new InvalidParameterException(String.valueOf(Math.random()),
-					"userId '" + user.getUserId() + "' is invalid.  " +
-					"userId must be null during user creation.");
-		}
 		if(user.getFirstName() == null || user.getFirstName().length() < 1){
 			throw new MissingUserFieldException(String.valueOf(Math.random()),
 			"Required field 'firstName' is null or empty");
@@ -168,19 +163,17 @@ public class ModelValidator {
 	 * @param oldUserData
 	 */
 	public void validateUserUpdate(User newUserData, User oldUserData){
+		//Can either of these first two ever be triggered?
 		if(newUserData.getUserId() == null || newUserData.getUserId() < 1){
 			throw new MissingUserFieldException(String.valueOf(Math.random()),
 					"Required field 'userId' is null or empty");
 		}
-		if(newUserData.getUserId() != oldUserData.getUserId()){
-			throw new InvalidParameterException(String.valueOf(Math.random()),
-					"userId '" + newUserData.getUserId() + "' is invalid.  " +
-					"userId in request body must match userId in URI.");
-		}
-		if(newUserData.getFirstName() == null || newUserData.getFirstName().length() < 1){
-			throw new MissingUserFieldException(String.valueOf(Math.random()),
-			"Required field 'firstName' is null or empty");
-		}
+//		if(newUserData.getUserId() != oldUserData.getUserId()){
+//			throw new InvalidParameterException(String.valueOf(Math.random()),
+//					"userId '" + newUserData.getUserId() + "' is invalid.  " +
+//					"userId in request body must match userId in URI.");
+//		}
+		validateUser(newUserData);
 	}
 
 	public void validateRecruitInfo(RecruitInfo recruitInfo) {

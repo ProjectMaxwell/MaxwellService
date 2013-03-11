@@ -14,7 +14,7 @@ public interface UserDAO {
 	
 	public User createUser(User user) throws WebApplicationException;
 
-	public User updateUser(User user) throws WebApplicationException;
+	public User updateUser(User user, int userId) throws WebApplicationException;
 
 	public RecruitInfo createRecruitInfo(RecruitInfo recruitInfo, int userId);
 	

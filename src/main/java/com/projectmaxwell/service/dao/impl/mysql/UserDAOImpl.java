@@ -17,6 +17,7 @@ import com.projectmaxwell.exception.MySQLException;
 import com.projectmaxwell.model.RecruitInfo;
 import com.projectmaxwell.model.User;
 import com.projectmaxwell.model.UserType;
+import com.projectmaxwell.service.SupportedHttpMethods;
 import com.projectmaxwell.service.dao.UserDAO;
 import com.projectmaxwell.service.dao.impl.mysql.AbstractMysqlDAOImpl;
 
@@ -48,7 +49,16 @@ public class UserDAOImpl extends AbstractMysqlDAOImpl implements UserDAO {
 			user.setUserTypeId(result.getInt("user_type_id"));
 			user.setYearGraduated(result.getInt("year_graduated"));
 			user.setYearInitiated(result.getInt("year_initiated"));
-			user.setUserId(userId);
+			user.setPhoneNumber(result.getString("phone_number"));
+			user.setHighschool(result.getString("highschool"));
+			user.setReferredById(result.getInt("referred_by_id"));
+			user.setFacebookId(result.getString("facebook_id"));
+			user.setLinkedInId(result.getString("linkedIn_id"));
+			user.setTwitterId(result.getString("twitter_id"));
+			user.setGoogleAccountId(result.getString("google_account_id"));
+			user.setDateCreated(result.getInt("date_created"));
+			user.setDateModified(result.getInt("date_modified"));
+			//user.setPhoneNumber(result.getString("phone_number"));
 		}catch(SQLException sqle){
 			throw new WebApplicationException(sqle);
 		}finally{
@@ -142,6 +152,7 @@ public class UserDAOImpl extends AbstractMysqlDAOImpl implements UserDAO {
 			ResultSet result = call.executeQuery();
 			result.next();
 			user.setUserId(result.getInt("id"));
+			user.setDateCreated(result.getInt("date_created"));
 			
 			if(user.getUserTypeId() == 5){
 				RecruitInfo recruitInfo = user.getRecruitInfo();
@@ -161,40 +172,72 @@ public class UserDAOImpl extends AbstractMysqlDAOImpl implements UserDAO {
 	}
 	
 	@Override
-	public User updateUser(User newUser) throws WebApplicationException {
-		if(newUser == null || newUser.getUserId() == null || newUser.getUserId() < 1){
+	public User updateUser(User user, int userId) throws WebApplicationException {
+		if(user == null || user.getUserId() == null || user.getUserId() < 1 || userId < 1 || user.getUserId() != userId){
 			throw new MissingUserFieldException(String.valueOf(Math.random()),
 					"Required field 'userId' is null or empty");
 		}
-		User oldUser = getUserById(newUser.getUserId());
-		
-		validator.validateUserUpdate(newUser, oldUser);
+		//User oldUser = getUserById(user.getUserId());
+		validator.validateUserObjectByMethod(user, null, SupportedHttpMethods.PUT);
 		
 		try{
-			CallableStatement call = con.prepareCall("CALL `update_user_by_id`(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-			call.setString(1, newUser.getFirstName());
-			call.setString(2, newUser.getLastName());
-			call.setString(3, newUser.getEmail());
-			call.setObject(4, newUser.getDateOfBirth());
-			call.setInt(5, newUser.getYearInitiated());
-			call.setInt(6, newUser.getYearGraduated());
-			call.setInt(7, newUser.getPin());
-			call.setInt(8, newUser.getAssociateClassId());
-			if(newUser.getChapterId() > 0){
-				call.setInt(9, newUser.getChapterId());
+			CallableStatement call = con.prepareCall("CALL `update_user_by_id`(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+			call.setInt(1, user.getUserId());
+			call.setString(2, user.getFirstName());
+			call.setString(3, user.getLastName());
+			call.setString(4, user.getEmail());
+			call.setObject(5, user.getDateOfBirth());
+			if(user.getYearInitiated() != null){
+				call.setInt(6, user.getYearInitiated());
+			}else{
+				call.setNull(6, Type.INT);
+			}
+			if(user.getYearGraduated() != null){
+				call.setInt(7, user.getYearGraduated());
+			}else{
+				call.setNull(7, Type.INT);
+			}
+			if(user.getPin() != null){
+				call.setInt(8, user.getPin());
+			}else{
+				call.setNull(8, Type.INT);
+			}
+			if(user.getAssociateClassId() != null){
+				call.setInt(9, user.getAssociateClassId());
 			}else{
 				call.setNull(9, Type.INT);
 			}
-			call.setInt(10, newUser.getUserTypeId());
-			call.setInt(11, newUser.getUserId());
+			if(user.getChapterId() > 0){
+				call.setInt(10, user.getChapterId());
+			}else{
+				call.setNull(10, Type.INT);
+			}
+			if(user.getUserTypeId() != null){
+				call.setInt(11, user.getUserTypeId());
+			}else{
+				call.setNull(11, Type.INT);
+			}
+			call.setString(12, user.getPhoneNumber());
+			call.setString(13, user.getHighschool());
+			if(user.getReferredById() != null){
+				call.setInt(14, user.getReferredById());
+			}else{
+				call.setNull(14, Type.INT);
+			}
+			call.setString(15, user.getFacebookId());
+			call.setString(16, user.getLinkedInId());
+			call.setString(17, user.getTwitterId());
+			call.setString(18, user.getGoogleAccountId());
 			ResultSet result = call.executeQuery();
-			result.next();
+			if(result.next()){
+				user.setDateModified(result.getInt("date_modified"));
+			}
 		}catch(SQLException sqle){
-			throw new WebApplicationException(sqle);
+			throw new MySQLException(String.valueOf(Math.random()),"Could not update user due to exception. " + sqle.getMessage());
 		}finally{
 			releaseConnection();			
 		}
-		return newUser;
+		return user;
 	}
 	
 	@Override
@@ -221,7 +264,10 @@ public class UserDAOImpl extends AbstractMysqlDAOImpl implements UserDAO {
 			call.setString(8, recruitInfo.getLookingFor());
 			call.setString(9, recruitInfo.getExpectations());
 			call.setString(10, recruitInfo.getExtracurriculars());
-			call.execute();
+			ResultSet result = call.executeQuery();
+			if(result.next()){
+				recruitInfo.setDateCreated(result.getLong("date_created"));
+			}
 		} catch (SQLException e) {
 			throw new MySQLException(String.valueOf(Math.random()),"Could not create recruit info due to exception. " + e.getMessage());
 		}finally{
@@ -277,8 +323,6 @@ public class UserDAOImpl extends AbstractMysqlDAOImpl implements UserDAO {
 			result.next();
 			recruitInfo.setRecruitEngagementLevelId(result.getInt("recruit_engagement_level_id"));
 			recruitInfo.setRecruitSourceId(result.getInt("recruit_source_id"));
-			recruitInfo.setDateAdded(result.getLong("date_added"));
-			recruitInfo.setDateModified(result.getLong("date_modified"));
 			recruitInfo.setRushListUserId(result.getInt("rush_list_user_id"));
 			recruitInfo.setGpa(result.getDouble("gpa"));
 			recruitInfo.setClassStanding(result.getString("class_standing"));
@@ -286,6 +330,8 @@ public class UserDAOImpl extends AbstractMysqlDAOImpl implements UserDAO {
 			recruitInfo.setLookingFor(result.getString("looking_for"));
 			recruitInfo.setExpectations(result.getString("expectations"));
 			recruitInfo.setExtracurriculars(result.getString("extracurriculars"));
+			recruitInfo.setDateCreated(result.getLong("date_created"));
+			recruitInfo.setDateModified(result.getLong("date_modified"));
 		}catch(SQLException sqle){
 			throw new WebApplicationException(sqle);
 		}finally{
