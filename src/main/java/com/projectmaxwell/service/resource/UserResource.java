@@ -112,6 +112,12 @@ public class UserResource {
 		return userDAO.getRecruitInfoByUserId(userId);
 	}
 	
+	@PUT
+	@Path("/{userId}/recruitInfo")
+	public RecruitInfo updateRecruitInfo(@PathParam("userId") int userId, RecruitInfo recruitInfo){
+		return userDAO.updateRecruitInfo(recruitInfo, userId);
+	}
+	
 	@GET
 	@Path("/userTypes")
 	public UserType[] getUserTypes(){

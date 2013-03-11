@@ -21,4 +21,6 @@ public interface UserDAO {
 	public UserType[] getUserTypes();
 
 	public RecruitInfo getRecruitInfoByUserId(int userId);
+	
+	public RecruitInfo updateRecruitInfo(RecruitInfo recruitInfo, int userId);
 }

@@ -9,14 +9,15 @@ public class RecruitInfo {
 //	private int userId;
 	private Integer recruitSourceId;
 	private Integer recruitEngagementLevelId;
-	private int rushListUserId;
+	private Integer rushListUserId;
 	private String classStanding;
 	private String lifeExperiences;
 	private String lookingFor;
 	private String expectations;
 	private String extracurriculars;
-	private double gpa;
-	private long dateAdded;
+	private Double gpa;
+	private Long dateAdded;
+	private Long dateModified;
 	
 /*	public int getUserId() {
 		return userId;
@@ -104,6 +105,14 @@ public class RecruitInfo {
 
 	public void setDateAdded(Long dateAdded) {
 		this.dateAdded = dateAdded;
+	}
+
+	public Long getDateModified() {
+		return dateModified;
+	}
+
+	public void setDateModified(Long dateModified) {
+		this.dateModified = dateModified;
 	}
 	
 	
