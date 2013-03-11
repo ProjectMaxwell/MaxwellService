@@ -31,6 +31,8 @@ public class ChapterDAOImpl extends AbstractMysqlDAOImpl implements ChapterDAO {
 			return chapterList.toArray(new Chapter[chapterList.size()]);
 		} catch (SQLException e) {
 			throw new MySQLException(String.valueOf(Math.random()),"Could not retrieve list of chapters due to mysql exception: " + e.getMessage());
+		}finally{
+			releaseConnection();
 		}
 	}
 
