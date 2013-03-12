@@ -58,7 +58,6 @@ public class UserDAOImpl extends AbstractMysqlDAOImpl implements UserDAO {
 			user.setGoogleAccountId(result.getString("google_account_id"));
 			user.setDateCreated(result.getInt("date_created"));
 			user.setDateModified(result.getInt("date_modified"));
-			//user.setPhoneNumber(result.getString("phone_number"));
 		}catch(SQLException sqle){
 			throw new WebApplicationException(sqle);
 		}finally{
@@ -154,7 +153,7 @@ public class UserDAOImpl extends AbstractMysqlDAOImpl implements UserDAO {
 			user.setUserId(result.getInt("id"));
 			user.setDateCreated(result.getInt("date_created"));
 			
-			if(user.getUserTypeId() == 5){
+			/*if(user.getUserTypeId() == 5){
 				RecruitInfo recruitInfo = user.getRecruitInfo();
 				if(recruitInfo == null){
 					recruitInfo = new RecruitInfo();
@@ -162,7 +161,7 @@ public class UserDAOImpl extends AbstractMysqlDAOImpl implements UserDAO {
 					recruitInfo.setRecruitSourceId(6);
 				}
 				createRecruitInfo(recruitInfo, Integer.valueOf(user.getUserId()));
-			}
+			}*/
 		}catch(SQLException sqle){
 			throw new WebApplicationException(sqle);
 		}finally{
@@ -238,106 +237,6 @@ public class UserDAOImpl extends AbstractMysqlDAOImpl implements UserDAO {
 			releaseConnection();			
 		}
 		return user;
-	}
-	
-	@Override
-	public RecruitInfo createRecruitInfo(RecruitInfo recruitInfo, int userId){
-		validator.validateRecruitInfo(recruitInfo);
-		
-		try {
-			CallableStatement call = con.prepareCall("CALL create_recruit_info(?,?,?,?,?,?,?,?,?,?)");
-			call.setInt(1, userId);
-			call.setInt(2, recruitInfo.getRecruitSourceId());
-			call.setInt(3, recruitInfo.getRecruitEngagementLevelId());
-			if(recruitInfo.getRushListUserId() != null){
-				call.setInt(4, recruitInfo.getRushListUserId());
-			}else{
-				call.setNull(4, Type.INT);
-			}
-			if(recruitInfo.getGpa() != null){
-				call.setDouble(5, recruitInfo.getGpa());
-			}else{
-				call.setNull(5, Type.DOUBLE);
-			}
-			call.setString(6, recruitInfo.getClassStanding());
-			call.setString(7, recruitInfo.getLifeExperiences());
-			call.setString(8, recruitInfo.getLookingFor());
-			call.setString(9, recruitInfo.getExpectations());
-			call.setString(10, recruitInfo.getExtracurriculars());
-			ResultSet result = call.executeQuery();
-			if(result.next()){
-				recruitInfo.setDateCreated(result.getLong("date_created"));
-			}
-		} catch (SQLException e) {
-			throw new MySQLException(String.valueOf(Math.random()),"Could not create recruit info due to exception. " + e.getMessage());
-		}finally{
-			releaseConnection();
-		}
-		return recruitInfo;
-	}
-
-	@Override
-	public RecruitInfo updateRecruitInfo(RecruitInfo recruitInfo, int userId) {
-		validator.validateRecruitInfo(recruitInfo);
-		try {
-			CallableStatement call = con.prepareCall("CALL update_recruit_info_by_user_id(?,?,?,?,?,?,?,?,?,?)");
-			call.setInt(1, userId);
-			call.setInt(2, recruitInfo.getRecruitSourceId());
-			call.setInt(3, recruitInfo.getRecruitEngagementLevelId());
-			if(recruitInfo.getRushListUserId() != null){
-				call.setInt(4, recruitInfo.getRushListUserId());
-			}else{
-				call.setNull(4, Type.INT);
-			}
-			if(recruitInfo.getGpa() != null){
-				call.setDouble(5, recruitInfo.getGpa());
-			}else{
-				call.setNull(5, Type.DOUBLE);
-			}
-			call.setString(6, recruitInfo.getClassStanding());
-			call.setString(7, recruitInfo.getLifeExperiences());
-			call.setString(8, recruitInfo.getLookingFor());
-			call.setString(9, recruitInfo.getExpectations());
-			call.setString(10, recruitInfo.getExtracurriculars());
-			ResultSet result = call.executeQuery();
-			if(result.next()){
-				recruitInfo.setDateModified(result.getLong("date_modified"));
-			}
-		} catch (SQLException e) {
-			throw new MySQLException(String.valueOf(Math.random()),"Could not update recruit info due to exception. " + e.getMessage());
-		}finally{
-			releaseConnection();
-		}
-		
-		return recruitInfo;
-	}
-	
-	@Override
-	public RecruitInfo getRecruitInfoByUserId(int userId) throws WebApplicationException{
-		RecruitInfo recruitInfo = new RecruitInfo();
-		
-		try{
-			CallableStatement call = con.prepareCall("CALL get_recruit_info_by_user_id(?)");
-			call.setInt(1, userId);
-			ResultSet result = call.executeQuery();
-			result.next();
-			recruitInfo.setRecruitEngagementLevelId(result.getInt("recruit_engagement_level_id"));
-			recruitInfo.setRecruitSourceId(result.getInt("recruit_source_id"));
-			recruitInfo.setRushListUserId(result.getInt("rush_list_user_id"));
-			recruitInfo.setGpa(result.getDouble("gpa"));
-			recruitInfo.setClassStanding(result.getString("class_standing"));
-			recruitInfo.setLifeExperiences(result.getString("life_experiences"));
-			recruitInfo.setLookingFor(result.getString("looking_for"));
-			recruitInfo.setExpectations(result.getString("expectations"));
-			recruitInfo.setExtracurriculars(result.getString("extracurriculars"));
-			recruitInfo.setDateCreated(result.getLong("date_created"));
-			recruitInfo.setDateModified(result.getLong("date_modified"));
-		}catch(SQLException sqle){
-			throw new WebApplicationException(sqle);
-		}finally{
-			releaseConnection();			
-		}
-		return recruitInfo;
 	}
 
 	@Override

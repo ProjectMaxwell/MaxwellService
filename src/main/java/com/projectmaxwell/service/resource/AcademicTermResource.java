@@ -30,19 +30,21 @@ public class AcademicTermResource extends AbstractResource{
 	}
 	
 	@GET
-	@RolesAllowed({"CUD_system_metadata"})
+	@RolesAllowed({"view_system_metadata"})
 	public AcademicTerm[] getAcademicTerms(@HeaderParam("Authorization") String token){
 		return academicTermDAO.getAcademicTerms();
 	}
 	
 	@GET
 	@Path("/{id}")
+	@RolesAllowed({"view_system_metadata"})
 	public AcademicTerm getAcademicTermById(@PathParam("id") int academicTermId){
 		return academicTermDAO.getAcademicTermById(academicTermId);
 	}
 	
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
+	@RolesAllowed({"CUD_system_metadata"})
 	public AcademicTerm createAcademicTerm(AcademicTerm academicTerm){
 		return academicTermDAO.createAcademicTerm(academicTerm);
 	}
@@ -50,13 +52,15 @@ public class AcademicTermResource extends AbstractResource{
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/{id}")
+	@RolesAllowed({"CUD_system_metadata"})
 	public AcademicTerm updateAcademicTerm(AcademicTerm academicTerm, @PathParam("id") int academicTermId){
 		return academicTermDAO.updateAcademicTerm(academicTerm);
 	}
 	
 	@DELETE
 	@Path("/{id}")
-	public void updateAcademicTerm(@PathParam("id") int academicTermId){
+	@RolesAllowed({"CUD_system_metadata"})
+	public void deleteAcademicTerm(@PathParam("id") int academicTermId){
 		academicTermDAO.deleteAcademicTermById(academicTermId);
 	}
 }

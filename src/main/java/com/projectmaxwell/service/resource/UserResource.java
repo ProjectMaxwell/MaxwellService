@@ -19,8 +19,10 @@ import com.projectmaxwell.model.MailingList;
 import com.projectmaxwell.model.RecruitInfo;
 import com.projectmaxwell.model.User;
 import com.projectmaxwell.model.UserType;
+import com.projectmaxwell.service.dao.RecruitDAO;
 import com.projectmaxwell.service.dao.UserDAO;
 import com.projectmaxwell.service.dao.impl.csv.MailingListBatchImportDAOImpl;
+import com.projectmaxwell.service.dao.impl.mysql.RecruitDAOImpl;
 import com.projectmaxwell.service.dao.impl.mysql.UserDAOImpl;
 
 @Path("/users")
@@ -29,11 +31,13 @@ import com.projectmaxwell.service.dao.impl.mysql.UserDAOImpl;
 public class UserResource {
 
 	private UserDAO userDAO;
+	private RecruitDAO recruitDAO;
 	private HashMap<Integer,HashSet<MailingList>> mailingListMappings;
 	private MailingListBatchImportDAOImpl mailingListBatchImportDAO;
 	
 	public UserResource(){
 		userDAO = new UserDAOImpl();
+		recruitDAO = new RecruitDAOImpl();
 		mailingListMappings = getMailingListMappings();
 		mailingListBatchImportDAO = MailingListBatchImportDAOImpl.getInstance();
 	}
@@ -70,6 +74,18 @@ public class UserResource {
 	@RolesAllowed({"create_user"})
 	public User createUser(User user) throws WebApplicationException{
 		User returnedUser = userDAO.createUser(user);
+		
+		//If user creation worked, see if we need to do special recruit info creation
+		if(user.getUserTypeId() == 5){
+			RecruitInfo recruitInfo = user.getRecruitInfo();
+			if(recruitInfo == null){
+				recruitInfo = new RecruitInfo();
+				recruitInfo.setRecruitEngagementLevelId(1);
+				recruitInfo.setRecruitSourceId(6);
+			}
+			recruitDAO.createRecruitInfo(recruitInfo, Integer.valueOf(user.getUserId()));
+		}
+		
 		//If user creation worked, now add that user to the appropriate mailing lists!
 		if(returnedUser != null && user.getUserTypeId() != null && user.getEmail() != null){
 			//Batch Importer not yet setup to do this on a per mailing list basis
@@ -92,34 +108,38 @@ public class UserResource {
 	@PUT
 	@Path("/{userId}")
 	@Consumes(MediaType.APPLICATION_JSON)
+	@RolesAllowed({"update_user_others"})
 	public User updateUser(User user, @PathParam("userId") int userId) throws WebApplicationException{
 		return userDAO.updateUser(user, userId);
 	}
 	
 	@POST
 	@Path("/{userId}/recruitInfo")
+	@RolesAllowed({"CUD_recruit_info"})
+	@Deprecated
 	public RecruitInfo createRecruitInfo(@PathParam("userId") String userId, RecruitInfo recruitInfo){
-/*		RecruitInfo info = new RecruitInfo();
-		info.setRecruitSourceId(recruitInfo.getRecruitSourceId());
-		info.setRecruitEngagementLevelId(recruitInfo.getRecruitEngagementLevelId());
-		return info;*/
-		return userDAO.createRecruitInfo(recruitInfo, Integer.valueOf(userId));
+		return recruitDAO.createRecruitInfo(recruitInfo, Integer.valueOf(userId));
 	}
 	
 	@GET
 	@Path("/{userId}/recruitInfo")
+	@RolesAllowed({"view_recruit_info"})
+	@Deprecated
 	public RecruitInfo getRecruitInfoByUserId(@PathParam("userId") int userId){
-		return userDAO.getRecruitInfoByUserId(userId);
+		return recruitDAO.getRecruitInfoByUserId(userId);
 	}
 	
 	@PUT
 	@Path("/{userId}/recruitInfo")
+	@RolesAllowed({"CUD_recruit_info"})
+	@Deprecated
 	public RecruitInfo updateRecruitInfo(@PathParam("userId") int userId, RecruitInfo recruitInfo){
-		return userDAO.updateRecruitInfo(recruitInfo, userId);
+		return recruitDAO.updateRecruitInfo(recruitInfo, userId);
 	}
 	
 	@GET
 	@Path("/userTypes")
+	@RolesAllowed({"view_system_metadata"})
 	public UserType[] getUserTypes(){
 		return userDAO.getUserTypes();
 	}

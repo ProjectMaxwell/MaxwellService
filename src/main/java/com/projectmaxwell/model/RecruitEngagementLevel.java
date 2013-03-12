@@ -2,16 +2,16 @@ package com.projectmaxwell.model;
 
 public class RecruitEngagementLevel {
 	
-	private int id;
+	private int recruitEngagementLevelId;
 	private String engagementLevel;
 	private String description;
 	
-	public int getId() {
-		return id;
+	public int getRecruitEngagementLevelId() {
+		return recruitEngagementLevelId;
 	}
 	
-	public void setId(int id) {
-		this.id = id;
+	public void setRecruitEngagementLevelId(int id) {
+		this.recruitEngagementLevelId = id;
 	}
 	
 	public String getEngagementLevel() {

@@ -1,5 +1,6 @@
 package com.projectmaxwell.service.resource;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -22,6 +23,7 @@ public class ChapterResource extends AbstractResource {
 	}
 	
 	@GET
+	@RolesAllowed({"view_system_metadata"})
 	public Chapter[] getChapters(){
 		return chapterDAO.getChapters();
 	}

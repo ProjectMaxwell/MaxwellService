@@ -1,5 +1,6 @@
 package com.projectmaxwell.service.resource;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -26,11 +27,13 @@ public class RecruitContactResource extends AbstractResource {
 	
 	@GET
 	@Path("/recruitContactTypes")
+	@RolesAllowed({"view_system_metadata"})
 	public RecruitContactType[] getChapters(){
 		return recruitContactDAO.getRecruitContactTypes();
 	}
 	
 	@GET
+	@RolesAllowed({"view_recruit_contact_history"})
 	public RecruitContact[] getRecruitContactHistory(@QueryParam("recruitUserId") Integer recruitUserId, 
 			@QueryParam("recruitContactorUserId") Integer recruitContactorUserId,
 			@QueryParam("maxResults") Integer maxResults){
@@ -39,6 +42,7 @@ public class RecruitContactResource extends AbstractResource {
 	}
 	
 	@POST
+	@RolesAllowed({"record_recruit_contact"})
 	public RecruitContact recordRecruitContact(RecruitContact recruitContact){
 		return recruitContactDAO.recordRecruitContact(recruitContact); 
 	}

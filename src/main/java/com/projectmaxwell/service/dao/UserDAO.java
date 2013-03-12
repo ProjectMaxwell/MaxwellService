@@ -16,11 +16,11 @@ public interface UserDAO {
 
 	public User updateUser(User user, int userId) throws WebApplicationException;
 
-	public RecruitInfo createRecruitInfo(RecruitInfo recruitInfo, int userId);
+//	public RecruitInfo createRecruitInfo(RecruitInfo recruitInfo, int userId);
 	
 	public UserType[] getUserTypes();
 
-	public RecruitInfo getRecruitInfoByUserId(int userId);
+//	public RecruitInfo getRecruitInfoByUserId(int userId);
 	
-	public RecruitInfo updateRecruitInfo(RecruitInfo recruitInfo, int userId);
+//	public RecruitInfo updateRecruitInfo(RecruitInfo recruitInfo, int userId);
 }

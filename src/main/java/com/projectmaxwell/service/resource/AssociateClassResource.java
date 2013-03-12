@@ -1,5 +1,6 @@
 package com.projectmaxwell.service.resource;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -25,6 +26,7 @@ public class AssociateClassResource {
 	}
 	
 	@GET
+	@RolesAllowed({"view_system_metadata"})
 	public AssociateClass[] getAssociateClasses(){
 		return associateClassDAO.getAssociateClasses();
 	}
@@ -37,6 +39,7 @@ public class AssociateClassResource {
 	
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
+	@RolesAllowed({"CUD_system_metadata"})
 	public AssociateClass createAssociateClass(AssociateClass associateClass){
 		return associateClassDAO.createAssociateClass(associateClass);
 	}
@@ -44,13 +47,15 @@ public class AssociateClassResource {
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/{id}")
+	@RolesAllowed({"CUD_system_metadata"})
 	public AssociateClass updateAssociateClass(AssociateClass associateClass, @PathParam("id") int associateClassId){
 		return associateClassDAO.updateAssociateClass(associateClass);
 	}
 	
 	@DELETE
 	@Path("/{id}")
-	public void updateAssociateClass(@PathParam("id") int associateClassId){
+	@RolesAllowed({"CUD_system_metadata"})
+	public void deleteAssociateClass(@PathParam("id") int associateClassId){
 		associateClassDAO.deleteAssociateClassById(associateClassId);
 	}
 }

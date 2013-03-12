@@ -1,5 +1,6 @@
 package com.projectmaxwell.service.resource;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -31,6 +32,7 @@ public class EACResource extends AbstractResource {
 	
 	@POST
 	@Path("/meet-ups")
+	@RolesAllowed({"CUD_EAC_meeting"})
 	public EACMeeting createEACMeeting(EACMeeting meeting){
 		return meetingResponseDAO.createEACMeeting(meeting);
 	}

@@ -1,6 +1,7 @@
 package com.projectmaxwell.model.validation;
 
 import com.projectmaxwell.model.EACMeeting;
+import com.projectmaxwell.model.RecruitComment;
 import com.projectmaxwell.model.RecruitContact;
 import com.projectmaxwell.model.RecruitInfo;
 import com.projectmaxwell.model.User;
@@ -245,6 +246,33 @@ public class ModelValidator {
 			throw new InvalidFieldValueException(String.valueOf(Math.random()),
 					"Required field 'contactTimestamp' may not be represented by a timestamp larger than the maximum 32-bit unix timestamp value." +
 					"  Thanks for trying, though.");
+		}
+	}
+
+	public void validateRecruitComment(RecruitComment recruitComment) {
+		if(recruitComment == null){
+			throw new UnableToValidateException(String.valueOf(Math.random()),
+					"Recruit Comment object is null or invalid.");
+		}
+		if(recruitComment.getRecruitCommentId() > 0){
+			throw new InvalidFieldValueException(String.valueOf(Math.random()),
+					"Required field 'recruitCommentId' is a system-defined variable that may not be explicitly declared.");
+		}
+		if(recruitComment.getRecruitUserId() < 1){
+			throw new InvalidFieldValueException(String.valueOf(Math.random()),
+					"Required field 'recruitUserId' is null or invalid.");
+		}
+		if(recruitComment.getCommenterUserId() < 1){
+			throw new InvalidFieldValueException(String.valueOf(Math.random()),
+					"Required field 'commenterUserId' is null or invalid.");
+		}
+		if(recruitComment.getDateCreated() > 0){
+			throw new InvalidFieldValueException(String.valueOf(Math.random()),
+					"Required field 'dateCreated' is a system-defined variable that may not be explicitly declared.");
+		}
+		if(recruitComment.getComment() == null || recruitComment.getComment().trim().length() < 1){
+			throw new InvalidFieldValueException(String.valueOf(Math.random()),
+					"Required filed 'comment' may not be null, and must consist of at least one non-whitespace character.");
 		}
 	}
 
